@@ -1,0 +1,56 @@
+<div class="page-header">
+    <p>Member Request</p>
+</div>
+<mat-card class="book-search" *ngIf="hasUser">
+    <form (ngSubmit)="onUserSubmit()" #bookForm="ngForm">
+        <mat-form-field class="example-form-field">
+            <input matInput type="text" placeholder="Serch by user name / id" [(ngModel)]="UserName" name="UserName">
+            <button mat-button *ngIf="UserName" matSuffix mat-icon-button aria-label="Clear" (click)="UserName=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">
+            <mat-icon>search</mat-icon>
+        </button>
+    </form>
+</mat-card>
+<mat-card class="book-search" *ngIf="!hasUser">
+    <h3>No member request found</h3>
+</mat-card>
+<mat-card *ngIf="hasUser">
+    <table>
+        <thead>
+            <tr class="page-header">
+                <th>Sr No</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Course ID</th>
+                <th>Accept/reject</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let u of users; let i=index">
+            <tr>
+                <td align="center">{{i+1}}</td>
+                <td align="center">
+                    <img *ngIf="u.user_image" width="50" src="{{url}}uploads/users/{{u.user_image}}" />
+                    <img *ngIf="!u.user_image" width="50" src="{{dummyUrl}}dummy_user.png" />
+                </td>
+                <td>{{u.f_name +' '+ u.l_name }}</td>
+                <td>{{u.dept}}</td>
+                <td>{{u.phone}}</td>
+                <td>{{u.email}}</td>
+                <td align="center">{{u.course_no}}</td>
+                <td align="center">
+                    <!-- <button mat-raised-button color="primary" (click)="giveApproval(u.id)"><mat-icon (click)="giveApproval(u.id)">done</mat-icon></button>
+                    <button mat-raised-button color="warn" (click)="giveRejection(u.id)"><mat-icon (click)="giveRejection(u.id)">clear</mat-icon></button> -->
+                    <mat-icon class="accept-denie" color="primary" (click)="giveApproval(u.id)">done</mat-icon>
+                    <mat-icon class="accept-denie" color="warn" (click)="giveRejection(u.id)">clear</mat-icon>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

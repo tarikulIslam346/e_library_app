@@ -1,0 +1,62 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+/* import angular theme */
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.page-header {
+    height: 35px;
+    /* border-radius: 4px; */
+    background: #00838F;
+    color: #fff;
+}
+
+.page-header p {
+    margin: 0;
+    text-align: center;
+    line-height: 33px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.mat-menu-panel {
+    max-width: 100% !important;
+}
+
+.issue_history_details .mat-menu-content:not(:empty) {
+    padding: 8px !important;
+}
+
+.member_table .mat-figure {
+    align-items: flex-start !important;
+}
+
+#viewer .mat-dialog-container {
+    padding: 0 !important;
+}
+
+ .query_deco .mat-grid-tile .mat-figure{
+    display: block !important;
+}
+
+.book-search {
+    padding: 16px 16px 0 !important;
+    margin-bottom: 1% !important;
+}
+
+
+@media (max-width:768px){
+    form {
+        margin: 0;
+        padding: 0;
+    }
+
+    .mat-expansion-panel-body{
+        padding: 0 !important;
+    }
+  }

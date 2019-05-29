@@ -1,0 +1,27 @@
+.pdf_controller {
+    background: darkgray;
+}
+
+ul {
+    display: inline;
+}
+
+li {
+    display: inline;
+}
+
+.icon_line li {
+    margin-right: 10px;
+}
+
+.report_line li {
+    margin-right: 15px;
+}
+
+mat-icon {
+    cursor: pointer;
+}
+
+#viewer {
+    background-color: #613030
+}

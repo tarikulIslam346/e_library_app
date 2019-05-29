@@ -1,0 +1,58 @@
+<div class="page-header">
+    <p>Search User</p>
+</div>
+<mat-card class="book-search">
+    <form (ngSubmit)="onUserSubmit()" #bookForm="ngForm">
+        <mat-form-field class="example-form-field">
+            <input matInput type="text" placeholder="Serch by user name / id" [(ngModel)]="UserName" name="UserName">
+            <button mat-button *ngIf="UserName" matSuffix mat-icon-button aria-label="Clear" (click)="UserName=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">
+            <mat-icon>search</mat-icon>
+        </button>
+    </form>
+</mat-card>
+<mat-card *ngIf="users">
+    <table>
+        <thead>
+            <tr class="page-header">
+                <th>Sr No.</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Rank</th>
+                <th>Appt option</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Image</th>
+                <th *ngIf="userService.isEditUserPermission">Edit</th>
+                <th *ngIf="userService.isEditUserPermission">On / Off</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let u of users|paginate:  { itemsPerPage: 10, currentPage: p }; let i=index;">
+            <tr>
+                <td>{{i+1}}</td>
+                <td>{{u.f_name +' '+ u.l_name }}</td>
+                <td>{{u.dept}}</td>
+                <td>{{u.designation}}</td>
+                <td>{{u.appt}}</td>
+                <td>{{u.phone}}</td>
+                <td>{{u.email}}</td>
+                <td align="center">
+                    <img *ngIf="u.user_image" src="{{url}}uploads/users/{{u.user_image}}" />
+                    <img *ngIf="!u.user_image" src="{{dummyUrl}}dummy_user.png" />
+                    <!-- <p *ngIf="!u.user_image">No image</p> -->
+                </td>
+                <td align="center" *ngIf="userService.isEditUserPermission">
+                    <mat-icon color="primary" (click)="editUser(u.id)">border_color</mat-icon>
+                </td>
+                <td align="center" *ngIf="userService.isEditUserPermission">
+                    <mat-slide-toggle #activation [checked]="u.is_active===1" (change)="userActivation(u.id,activation)"></mat-slide-toggle>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

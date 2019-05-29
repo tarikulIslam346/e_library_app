@@ -1,0 +1,25 @@
+<h1 align="center" *ngIf="!categoryEdit">Create New category</h1>
+<h1 class="edituser" align="center" *ngIf="categoryEdit">Edit category ID</h1>
+
+<form [formGroup]="categoryForm" (ngSubmit)="onCategorySubmit()">
+    <mat-form-field>
+        <input matInput placeholder="Add book category*" formControlName="title">
+    </mat-form-field>
+    <mat-form-field>
+        <input matInput placeholder="Category Description" formControlName="description">
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary" *ngIf="categoryMake" [disabled]="!categoryForm.valid">Submit</button>
+    <button mat-raised-button type="submit" color="primary" *ngIf="categoryEdit" [disabled]="!categoryForm.valid">Update</button>
+</form>
+
+<mat-list>
+    <h2 align="center">Book categories</h2>
+    <mat-list-item *ngFor="let c of bookCategory">
+        <h4 mat-line><strong>Title : </strong> {{c.title}}</h4>
+        <p mat-line><strong>Description : </strong> {{c.description}}</p>
+        <mat-icon color="accent" (click)="getSpecificCategory(c.category_id)">border_color</mat-icon>
+        <mat-divider></mat-divider>
+    </mat-list-item>
+</mat-list>
+
+<ngx-loading [show]="loader"></ngx-loading>

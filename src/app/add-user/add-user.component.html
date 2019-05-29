@@ -1,0 +1,74 @@
+<div class="page-header">
+    <p *ngIf="!userEdit">Create New User Here</p>
+    <p *ngIf="userEdit">Update User </p>
+</div>
+
+<mat-card>
+    <mat-grid-list cols="5" rowHeight="650px">
+        <mat-grid-tile colspan="2">
+            <img *ngIf="!imgURL && !userEdit" src="{{dummyUrl}}dummy_user.png" />
+            <img [src]="imgURL" height="250" *ngIf="imgURL">
+            <img *ngIf="userEdit && imageSource" height="250" src="{{url}}uploads/users/{{imageSource}}">
+            <img *ngIf="userEdit && !imageSource" height="250" src="{{dummyUrl}}dummy_user.png">
+            <!-- <img *ngIf="userEdit " height="250" src="/assets/dummy_user.png"> -->
+            <span style="color:red;" *ngIf="message">{{message}}</span>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2">
+            <form [formGroup]="userForm" (ngSubmit)="onUserSubmit()">
+                <div class="user-container">
+                    <mat-form-field>
+                        <mat-label>First Name *</mat-label>
+                        <input type="text" matInput placeholder="Enter your first Name" formControlName="f_name">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Last Name *</mat-label>
+                        <input type="text" matInput placeholder="Enter your last Name" formControlName="l_name">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Email *</mat-label>
+                        <input type="text" matInput placeholder="Enter your email" formControlName="email">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Select User Type" formControlName="type_id">
+                            <mat-option *ngFor="let ut of userType" value="{{ut.type_id}}">{{ut.u_type}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Course No / Card No </mat-label>
+                        <input type="text" matInput placeholder="Course No" formControlName="course_no">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Pers No. /BA No/BD No.</mat-label>
+                        <input type="text" matInput placeholder="Pers No" formControlName="pers_no">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Rank</mat-label>
+                        <input type="text" matInput placeholder="Rank" formControlName="designation">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Appt</mat-label>
+                        <input type="text" matInput placeholder="Appt" formControlName="appt">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Phone NO *</mat-label>
+                        <!-- <mat-icon matPrefix>phone</mat-icon> -->
+                        <!-- <span matPrefix>+ &nbsp;</span> -->
+                        <input type="tel" matInput placeholder="880-17xxx-xxx" formControlName="phone">
+                    </mat-form-field>
+                    <mat-form-field *ngIf="!userEdit">
+                        <mat-label>Password *</mat-label>
+                        <input type="password" matInput placeholder="Enter password" formControlName="password">
+                    </mat-form-field>
+                    <label for="file"></label>
+                    <!-- <input type="file" (change)="handleFileInput($event)" formControlName="file"> -->
+                    <input #file type="file" accept='image/*' (change)="preview(file.files)" (change)="handleFileInput($event)" formControlName="file" />
+                    <br>
+                    <button type="submit" mat-raised-button color="accent" *ngIf="!userEdit" [disabled]="!userForm.valid">Add
+                        User</button>
+                    <button type="submit" mat-raised-button color="accent" *ngIf="userEdit" [disabled]="!userForm.valid">Edit User</button>
+                </div>
+            </form>
+        </mat-grid-tile>
+    </mat-grid-list>
+</mat-card>
+<ngx-loading [show]="loader" *ngIf="userEdit"></ngx-loading>

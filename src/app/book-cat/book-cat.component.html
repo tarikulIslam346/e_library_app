@@ -1,0 +1,18 @@
+<div class="page-header">
+  <p *ngIf="!editCategory">Create category</p>
+  <p class="edituser" *ngIf="editCategory">Edit category ID</p>
+</div>
+<mat-card>
+
+  <form [formGroup]="categoryForm" (ngSubmit)="categorySubmit()">
+    <ngx-loading [show]="loader"></ngx-loading>
+    <mat-form-field>
+      <input matInput placeholder="Add book category*" formControlName="title">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Category Description" formControlName="description">
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary" *ngIf="!editCategory" [disabled]="!categoryForm.valid">Submit</button>
+    <button mat-raised-button type="submit" color="primary" *ngIf="editCategory">Update</button>
+  </form>
+</mat-card>

@@ -1,0 +1,94 @@
+<div class="page-header">
+    <p>Return/Issue History</p>
+</div>
+<mat-card class="book-search">
+    <form (ngSubmit)="onUserSubmit()" #bookForm="ngForm" *ngIf="userType === '1' || userType === '2'">
+        <mat-form-field class="example-form-field">
+            <input matInput type="text" placeholder="Search by username / course ID" [(ngModel)]="userName" name="userName">
+            <button mat-button *ngIf="userName" matSuffix mat-icon-button aria-label="Clear" (click)="userName=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button type="submit" matTooltip="Advance Search" mat-raised-button color="primary" style="padding: 0 8px; margin-left: 1%;">
+            <mat-icon style="line-height:1">search</mat-icon>
+        </button>
+    </form>
+
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Advance Search
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form (ngSubmit)="onFilterSubmit()" #filterForm="ngForm">
+                <mat-form-field style="width:30%; padding-left: 11%;">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="startDate" name="startDate" placeholder="Choose start date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field style="width:30%; padding-left: 10%;">
+                    <input matInput [matDatepicker]="myDatepicker" [(ngModel)]="endDate" name="endDate" placeholder="Choose end date">
+                    <mat-datepicker-toggle matSuffix [for]="myDatepicker"></mat-datepicker-toggle>
+                    <mat-datepicker #myDatepicker></mat-datepicker>
+                </mat-form-field>
+                <button type="submit" matTooltip="Advance Search" mat-raised-button style="padding: 0 8px;border-radius: 0px; margin-left: 2%;">
+                    <mat-icon style="line-height:1">search</mat-icon>
+                </button>
+                <button mat-raised-button matTooltip="Reset" (click)="resetIssueList()" style="padding: 0 8px;border-radius: 0px; margin-left: 2%;">
+                    <mat-icon style="line-height:1">autorenew</mat-icon>
+                </button>
+            </form>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+</mat-card>
+
+<mat-card *ngIf="issueList">
+    <table style="width:100%">
+        <thead>
+            <tr class="page-header" style="text-align:center">
+                <th>Issue No</th>
+                <!-- <th>To</th> -->
+                <th>Name</th>
+                <th>Course ID</th>
+                <th>Issue Date</th>
+                <th>Return Date</th>
+                <th>Single Return</th>
+                <th *ngIf="userService.isBookIssuePermission">Return All</th>
+                <th *ngIf="userType === '1' || userType === '2'">Re-issue</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let i of issueList">
+            <tr style="text-align:center">
+                <td>{{i.issue_id}}</td>
+                <!-- <td>{{i.user_id}}</td> -->
+                <td style="text-align:left">{{i.f_name + ' '+i.l_name}}</td>
+                <td>{{i.course_no}}</td>
+                <td>{{i.issue_date}}</td>
+                <td>{{i.return_date}}</td>
+                <td>
+                    <button mat-icon-button>
+                        <mat-icon (click)="getIssueDetails(i.issue_id)">reply</mat-icon>
+                    </button>
+                </td>
+                <td *ngIf="userService.isBookIssuePermission">
+                    <button mat-mini-fab color="primary" [disabled]="i.return_status==1">
+                                <mat-icon (click)="returnBook(i.issue_id)">reply_all</mat-icon>
+                    </button>
+                </td>
+                <td *ngIf="userType === '1' || userType === '2'">
+                    <button mat-icon-button [disabled]="i.return_status==1">
+                        <mat-icon (click)="reissueBook(i.issue_id)">swap_horiz</mat-icon>
+                    </button>
+                </td>
+                <td *ngIf="i.return_status==1">Yes</td>
+                <td *ngIf="i.return_status==0">No</td>
+
+            </tr>
+        </tbody>
+    </table>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

@@ -1,0 +1,41 @@
+mat-form-field{
+    width: 89%;
+}
+
+button{
+    margin-left: 2%;
+}
+
+.advance_search_field{
+    width:20%;
+    padding-left: 5%;
+}
+
+.book-search{
+    margin-bottom: 2%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+tr:hover{
+    -webkit-box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    z-index: 1;
+}
+
+table{
+    width: 100%;
+    text-align: left;
+}
+
+table>thead>tr>th,
+table>tbody>tr>td{
+    padding: 0 10px;
+    font-size: 14px;
+}
+table>thead>tr>th{
+    background: #3f51b5;
+}
+table>tbody:nth-child(even){
+    background: lightgrey;
+}

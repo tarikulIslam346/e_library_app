@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>User Group No # {{data.typeId}}</h2>
+<mat-dialog-content class="mat-typography">
+    <table>
+        <thead>
+            <tr class="page-header">
+                <th>Menu ID</th>
+                <th>Menu Name</th>
+                <th>Read</th>
+                <th>Write</th>
+
+            </tr>
+        </thead>
+        <tbody *ngFor="let u of menuPermission">
+            <tr>
+                <td>{{u.menu_id}}</td>
+                <td>{{u.menu_name}}</td>
+                <td *ngIf="u.can_read == 1 ? true : false">
+                    <mat-icon color="primary">visibility</mat-icon>
+                </td>
+                <td *ngIf="u.can_read == 0 ? true : false">
+                    <mat-icon color="warn">visibility_of...</mat-icon>
+                </td>
+                <td *ngIf="u.can_write == 1 ? true : false">
+                    <mat-icon color="primary">visibility</mat-icon>
+                </td>
+                <td *ngIf="u.can_write == 0 ? true : false">
+                    <mat-icon color="warn">visibility_off</mat-icon>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <!-- <button mat-button mat-dialog-close>Cancel</button> -->
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial color="primary">Ok</button>
+</mat-dialog-actions>

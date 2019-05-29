@@ -1,0 +1,83 @@
+<section class="pdf_controller">
+
+    <ul class="icon_line">
+
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.firstPage()">account_balance</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.prevPage()">undo</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.nextPage()">redo</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.zoomIn()">zoom_in</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.zoomOut()">zoom_out</mat-icon>
+                </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.zoomReset()">cached</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.setZoomInPercent(55)">open_with</mat-icon>
+            </button>
+        </li>
+    </ul>
+
+    <ul>
+        <li>
+            <mat-form-field>
+                <input type="text" #search placeholder="Find here" matInput (keyup.enter)="pdfViewer.search(search.value,true)">
+            </mat-form-field>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.previousMatch()">fast_rewind</mat-icon>
+            </button>
+        </li>
+        <li>
+            <button>
+            <mat-icon (click)="pdfViewer.nextMatch()">fast_forward</mat-icon>
+            </button>
+        </li>
+    </ul>
+
+
+    <ul class="report_line">
+        <li>Page: {{ pdfViewer.getNumberOfPages() }}/{{ pdfViewer.getCurrentPage() }}</li>
+        <li>Zoom: {{ pdfViewer.getZoomPercent() }} %</li>
+    </ul>
+
+
+
+</section>
+
+<section id="viewer" oncopy="return false" oncut="return false" onpaste="return false">
+    <!-- Simple PDF Viewer: open the test.pdf at the second page -->
+    <simple-pdf-viewer id="viewer" #pdfViewer [src]="pdfSrc" removePageBorders="true"></simple-pdf-viewer>
+</section>
+<hr>
+<footer>
+    <div class="name"><img src="assets/brand_logo.png" style="width:3%">Intoiit Pdf-viewer</div>
+    <ul *ngFor="let info of pdfViewer.getDocumentInformation()">
+        <li>{{info.key}} : </li>
+        <li>{{info.value}}</li>
+    </ul>
+
+</footer>
+<ngx-loading [show]="loader"></ngx-loading>

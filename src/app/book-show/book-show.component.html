@@ -1,0 +1,90 @@
+<div class="page-header">
+    <p>Search Book</p>
+</div>
+<mat-card class="book-search">
+    <form (ngSubmit)="onBookSubmit()" #bookForm="ngForm">
+        <mat-form-field class="book-search-form-field" appearance="outline">
+            <input matInput type="text" placeholder="Search by Book Name/Accession No/Author" [(ngModel)]="bookName" name="bookName">
+            <button mat-button *ngIf="bookName" matSuffix mat-icon-button aria-label="Clear" (click)="bookName=''">
+                    <!-- <mat-icon >search</mat-icon> -->
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">
+            <mat-icon>search</mat-icon>
+        </button>
+    </form>
+</mat-card>
+
+<mat-card *ngIf="book">
+    <table>
+        <thead>
+            <tr class="page-header">
+                <!-- <th align="center">ID</th> -->
+                <th align="center">Name</th>
+                <!-- <th align="center">Accession No</th> -->
+                <th align="center">Author</th>
+                <th align="center">Publication year</th>
+                <th align="center">Edition</th>
+                <th align="center">Download Pdf</th>
+                <th align="center">View Pdf</th>
+                <th align="center" *ngIf="userService.isEditBookPermission">Edit</th>
+                <th align="center">Details</th>
+                <th align="center">Query</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let b of book |paginate:  { itemsPerPage: 10, currentPage: p };let i=index">
+            <tr *ngIf="b.type == 1">
+                <!-- <td align="center">{{i+1}} </td> -->
+                <td align="center"> {{b.title}}</td>
+                <!-- <td align="center"> {{b.accession_no}}</td> -->
+                <td align="center"> {{b.author}}</td>
+                <td align="center"> {{b.publication_year}}</td>
+                <td align="center"> {{b.edition}}</td>
+                <td align="center" *ngIf="canDownload[b.book_id]===1">
+                    <a *ngIf="b.file && b.file.substring(b.file.lastIndexOf('.') + 1) == 'pdf'" href="{{bookUrl}}{{b.file}}" target="blank">
+                        <button mat-raised-button color="primary" *ngIf="b.file && b.file.substring(b.file.lastIndexOf('.') + 1) == 'pdf'">Download <mat-icon>get_app</mat-icon></button>
+                    </a>
+                </td>
+                <td align="center" *ngIf="canDownload[b.book_id]!==1">
+                    <!-- No permission to download -->
+                    <button mat-raised-button color="primary" disabled>Download <mat-icon>get_app</mat-icon></button>
+
+                </td>
+                <td align="center" *ngIf="canView[b.book_id]===1">
+                    <button mat-raised-button color="primary" *ngIf="b.file && b.file.substring(b.file.lastIndexOf('.') + 1) == 'pdf'" (click)=" openPdfViewerDialog(b.file,b.book_id)">View Book <mat-icon >visibility</mat-icon>  </button>
+                </td>
+                <td align="center" *ngIf="canView[b.book_id]!==1">
+                    <!-- No permission to view -->
+                    <button mat-raised-button color="primary" disabled>View Book<mat-icon>visibility</mat-icon></button>
+                </td>
+                <td align="center" *ngIf="userService.isEditBookPermission">
+                    <button mat-icon-button>
+                        <mat-icon color="primary" (click)="getBookId(b.book_id)">border_color</mat-icon>
+                    </button>
+                </td>
+                <td align="center">
+                    <button mat-icon-button>
+                        <mat-icon color="warn" (click)="getBookDetails(b.book_id)">view_headline</mat-icon>
+                    </button>
+                </td>
+                <td align="center" *ngIf="userType==='1'">
+                    <button mat-icon-button>
+                        <mat-icon color="warn" (click)="getQuery(b.book_id)">help_outline</mat-icon>
+                    </button>
+                </td>
+                <td align="center" *ngIf="userType!=='1'">
+                    <button mat-icon-button>
+                        <mat-icon color="warn" (click)="giveBookQuery(b.book_id)">help_outline</mat-icon>
+                    </button>
+                </td>
+            </tr>
+
+
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    <!-- <pagination-controls (pageChange)="getAllBook($event)"></pagination-controls> -->
+</mat-card>
+
+<ngx-loading [show]="loadingbook"></ngx-loading>

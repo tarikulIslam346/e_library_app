@@ -1,0 +1,181 @@
+<div class="page-header">
+    <p *ngIf="!bookEdit">Create New Item</p>
+    <p *ngIf="bookEdit">Edit User of ID #{{userId}}</p>
+</div>
+<mat-card>
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit()">
+        <ngx-loading [show]="loader"></ngx-loading>
+
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile colspan="2">
+                <mat-radio-group class="example-radio-group" formControlName="type">
+                    <mat-radio-button *ngFor="let ft of fileType" [value]="ft.type_id" [checked]="fileTypeId == ft.type_id ? true : false">{{ft.type}}</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+            <mat-grid-tile rowspan="2" class="book_cover">
+                <img *ngIf="!imgURL" src="/assets/book_dummy1.png" />
+                <img [src]="imgURL" height="200" *ngIf="imgURL">
+                <input #file type="file" accept='image/*' (change)="preview(file.files)" (change)="handleImageInput($event)" formControlName="cover_image" />
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Title *" formControlName="title">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Author  *" [matAutocomplete]="auto" [formControl]="stateAuthorCtrl" formControlName="author">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let state of filteredAuthorStates | async" [value]="state.author_name">
+                            <span>{{state.author_name}}</span>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+        <mat-grid-list cols="3" rowHeight="100px">
+            <mat-grid-tile colspan="3">
+                <mat-form-field class="description_width">
+                    <textarea matInput placeholder="Description" formControlName="description"></textarea>
+                </mat-form-field>
+
+                <!-- <mat-form-field>
+                    <input type="text" matInput placeholder=" Publisher *" [matAutocomplete]="auto" [formControl]="statePublisherCtrl" formControlName="publisher">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option *ngFor="let publisher of filteredPublisherStates | async" [value]="publisher.publisher_name">
+                            <span>{{publisher.publisher_name}}</span>
+                        </mat-option>
+                    </mat-autocomplete>
+                </mat-form-field> -->
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="5" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Accession no " formControlName="accession_no">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Number of copy " formControlName="no_of_copy">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Shelf no" formControlName="shelf_no">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Row no" formControlName="row_no">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="publication year*" formControlName="publication_year">
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="3" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Edition" formControlName="edition">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Price" formControlName="price">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <mat-select placeholder="Category *" formControlName="category_id">
+                        <mat-option *ngFor="let bc of bookCategory" value="{{bc.category_id}}">{{bc.title}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <mat-grid-list cols="3" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput matTooltip="Enter per day fine of book" placeholder="Fine" formControlName="fine">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput matTooltip="example: http://www.example.com" placeholder="URL" formControlName="book_url">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <label for="file"></label>
+
+                <input type="file" (change)="handleFileInput($event)" formControlName="file">
+                <a *ngIf="bookEdit && hasfile" href="{{pdfSrc}}" target="balnk">Already has file </a>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="2" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput matTooltip="Normally 10-13 digits.example:99921-58-10-7" placeholder="ISBN NO" formControlName="isbn_no">
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+
+        <mat-expansion-panel *ngIf="!bookEdit">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Select Permission
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <table class="permission_table">
+                <tbody *ngFor="let ug of user">
+                    <tr>
+                        <td>
+                            <mat-checkbox formArrayName="type_id" (change)="addTypeId(groupPermission,ug.type_id)" #groupPermission>{{ug.u_type}}</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_view" (change)="addCanView(viewPermission,ug.type_id)" #viewPermission [disabled]="!groupPermission.checked">Can View</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_download" (change)="addCanDownload(downloadPermission,ug.type_id)" #downloadPermission [disabled]="!groupPermission.checked">Can download</mat-checkbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="bookEdit">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Edit Permission</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <table class="permission_table">
+                <tbody *ngFor="let ug of user;let i=index" [attr.data-index]="i+1">
+                    <tr>
+                        <td>
+                            <mat-checkbox formArrayName="type_id" (change)="editTypeId(groupPermission ,permissionId[i],ug.type_id)" #groupPermission [checked]=" permissionId[i]  ? true : false ">{{ug.u_type}}</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_view" (change)="editCanView(viewPermission,permissionId[i])" [disabled]="!groupPermission.checked" #viewPermission [checked]="  canViewId[i]  ? true : false " style="margin-left:20px;">Can View
+                            </mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_download" (change)="editCanDownload(downloadPermission,permissionId[i])" #downloadPermission [disabled]="!groupPermission.checked" [checked]="  canDownloadId[i] ? true : false ">Can download
+                            </mat-checkbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-expansion-panel>
+        <mat-grid-list cols="12" align="right">
+            <button mat-raised-button color="primary" *ngIf="!bookEdit" [disabled]="!bookForm.valid">Submit</button>
+            <button mat-raised-button color="primary" *ngIf="bookEdit" [disabled]="!bookForm.valid">Update</button>
+        </mat-grid-list>
+    </form>
+
+</mat-card>

@@ -1,0 +1,86 @@
+<mat-card class="top-box" *ngIf="userType === '1' ">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image">
+            <mat-icon>people</mat-icon>
+        </div>
+        <mat-card-title>Total User</mat-card-title>
+        <mat-card-subtitle>{{totalUser}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button (click)="navigateUser()">See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="top-box">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image">
+            <mat-icon>library_books</mat-icon>
+        </div>
+        <mat-card-title>Total Issue</mat-card-title>
+        <mat-card-subtitle>{{totalIssue}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button (click)="navigateuIssulist()">See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="top-box">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image">
+            <mat-icon>reply_all</mat-icon>
+        </div>
+        <mat-card-title>Total Return</mat-card-title>
+        <mat-card-subtitle>{{totalReturn}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button (click)="navigateuIssulist()">See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="top-box">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image">
+            <mat-icon>warning</mat-icon>
+        </div>
+        <mat-card-title>Due Issue</mat-card-title>
+        <mat-card-subtitle>{{totalIssue - totalReturn }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button (click)="navigateuIssulist()">See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="top-box" *ngIf="userType === '1'  ">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image">
+            <mat-icon>attach_money</mat-icon>
+        </div>
+        <mat-card-title>Total Fine</mat-card-title>
+        <mat-card-subtitle>{{totalFine}}/=</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button routerLink='/fine-show'>See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+<mat-card class="top-box" *ngIf="userType === '1'">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image" matBadge="{{requestCount}}" matBadgePosition="before" matBadgeColor="accent">
+            <mat-icon>person_add</mat-icon>
+        </div>
+        <mat-card-title>Request</mat-card-title>
+        <mat-card-subtitle>{{requestCount}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button routerLink='/view-member-request'>See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+
+<mat-card class="top-box" *ngIf="userType === '1'">
+    <mat-card-header>
+        <div mat-card-avatar class="top-header-image">
+            <mat-icon>mail</mat-icon>
+        </div>
+        <mat-card-title>Check query</mat-card-title>
+        <mat-card-subtitle>Total Query</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions>
+        <button routerLink='/query-show'>See Details <mat-icon>fast_forward</mat-icon></button>
+    </mat-card-actions>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

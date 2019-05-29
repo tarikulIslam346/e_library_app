@@ -1,0 +1,119 @@
+<div class="page-header">
+    <p>Archive</p>
+</div>
+
+<mat-card>
+    <ngx-loading [show]="loader"></ngx-loading>
+    <form [formGroup]="archiveForm" (ngSubmit)="onSubmit()">
+        <!-- <div class="archive-container"> -->
+        <mat-grid-list cols="1" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-radio-group class="example-radio-group" formControlName="type">
+                    <mat-radio-button *ngFor="let ft of fileType" [value]="ft.type_id" [checked]="fileTypeId == ft.type_id ? true : false">{{ft.type}}</mat-radio-button>
+                </mat-radio-group>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-grid-list cols="2" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field class="padding_right">
+                    <input type="text" matInput placeholder="Title *" formControlName="title">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="Speaker/Author" formControlName="speaker">
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Description" formControlName="description"></textarea>
+        </mat-form-field>
+
+        <mat-grid-list cols="2" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field class="padding_right">
+                    <input type="text" matInput placeholder="Venue" formControlName="venue">
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field>
+                    <input type="text" matInput placeholder="url" formControlName="url">
+                </mat-form-field>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <mat-grid-list cols="3" rowHeight="70px">
+            <mat-grid-tile>
+                <mat-form-field class="padding_right">
+                    <input matInput [matDatepicker]="picker" placeholder="Start date" formControlName="start_date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field class="padding_right">
+                    <input matInput [matDatepicker]="picker2" placeholder="End date" formControlName="end_date">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #picker2></mat-datepicker>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <label for="file"></label>
+                <input type="file" (change)="handleFileInput($event)" formControlName="file">
+            </mat-grid-tile>
+        </mat-grid-list>
+
+        <mat-expansion-panel *ngIf="!ArchiveEdit">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Select Permission
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <table class="permission_table">
+                <tbody *ngFor="let ug of user">
+                    <tr>
+                        <td>
+                            <mat-checkbox formArrayName="type_id" (change)="addTypeId(groupPermission,ug.type_id)" #groupPermission>{{ug.u_type}}</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_view" (change)="addCanView(viewPermission,ug.type_id)" #viewPermission [disabled]="!groupPermission.checked">View</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_download" (change)="addCanDownload(downloadPermission,ug.type_id)" #downloadPermission [disabled]="!groupPermission.checked">download</mat-checkbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-expansion-panel>
+        <mat-expansion-panel *ngIf="ArchiveEdit">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h3>Edit Permission</h3>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <table class="permission_table">
+                <tbody *ngFor="let ug of user;let i=index" [attr.data-index]="i+1">
+                    <tr>
+                        <td>
+                            <mat-checkbox formArrayName="type_id" (change)="editTypeId(groupPermission ,permissionId[i],ug.type_id)" #groupPermission [checked]=" permissionId[i]  ? true : false ">{{ug.u_type}}</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_view" (change)="editCanView(viewPermission,permissionId[i])" [disabled]="!groupPermission.checked" #viewPermission [checked]="  canViewId[i]  ? true : false " style="margin-left:20px;">Can View</mat-checkbox>
+                        </td>
+                        <td>
+                            <mat-checkbox formArrayName="can_download" (change)="editCanDownload(downloadPermission,permissionId[i])" #downloadPermission [disabled]="!groupPermission.checked" [checked]="  canDownloadId[i] ? true : false ">Can download
+                            </mat-checkbox>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-expansion-panel>
+        <mat-grid-list cols="12" align="right">
+            <button mat-raised-button color="primary" *ngIf="!ArchiveEdit" [disabled]="!archiveForm.valid">Submit</button>
+            <button mat-raised-button color="primary" *ngIf="ArchiveEdit" [disabled]="!archiveForm.valid">Update</button>
+        </mat-grid-list>
+    </form>
+</mat-card>

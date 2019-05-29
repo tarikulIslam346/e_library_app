@@ -1,0 +1,74 @@
+<mat-grid-list cols="5">
+    <mat-grid-tile class="item_image" *ngFor="let bd of bookDetails">
+        <img *ngIf="bd.cover_image" src="{{url}}uploads/books/{{bd.cover_image}}" />
+        <img *ngIf="!bd.cover_image" src="{{dummyUrl}}ppt_dummy.png" />
+    </mat-grid-tile>
+    <mat-grid-tile class="item_details" *ngFor="let bd of bookDetails">
+        <p>{{bd.description}}</p>
+    </mat-grid-tile>
+    <mat-grid-tile class="item_history" colspan="3" *ngFor="let bd of bookDetails">
+        <table>
+            <tr>
+                <th>Book Name</th>
+                <th>:</th>
+                <td>{{bd.title}}</td>
+            </tr>
+            <tr>
+                <th>Author Name</th>
+                <th>:</th>
+                <td>{{bd.author}}</td>
+            </tr>
+            <tr>
+                <th>Publisher</th>
+                <th>:</th>
+                <td>{{bd.publisher}}</td>
+            </tr>
+            <tr>
+                <th>Total Copy</th>
+                <th>:</th>
+                <td>{{bd.no_of_copy}}</td>
+            </tr>
+            <tr>
+                <th>Total Issue</th>
+                <th>:</th>
+                <td *ngIf="!totalIssue">0</td>
+                <td *ngIf="totalIssue">{{totalIssue}}
+                    <button mat-button [matMenuTriggerFor]="menu" matTooltip="Show Details">
+            <mat-icon>drag_indicator</mat-icon>
+          </button>
+                    <mat-menu #menu="matMenu" class="issue_history_details">
+                        <table class="issue_history" *ngIf="userListOfBookIssue">
+                            <tbody>
+                                <tr>
+                                    <th align="center">User Id</th>
+                                    <th>User Name</th>
+                                    <th align="center">Issue Date</th>
+                                    <th align="center">Return Date</th>
+                                </tr>
+                                <tr *ngFor="let u of userListOfBookIssue">
+                                    <td align="center">{{u.user_id}}</td>
+                                    <td>{{u.f_name}} {{u.l_name}}</td>
+                                    <td align="center">{{u.issue_date}}</td>
+                                    <td align="center">{{u.return_date}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p *ngIf="!userListOfBookIssue">No issue found</p>
+                    </mat-menu>
+                </td>
+            </tr>
+            <tr>
+                <th>Available Copy</th>
+                <th>:</th>
+                <td>{{bd.available_copy}}</td>
+            </tr>
+            <tr>
+                <th>Issuable Copy</th>
+                <th>:</th>
+                <td>{{bd.issuable_copy}}</td>
+            </tr>
+        </table>
+    </mat-grid-tile>
+
+</mat-grid-list>
+<ngx-loading [show]="loader"></ngx-loading>

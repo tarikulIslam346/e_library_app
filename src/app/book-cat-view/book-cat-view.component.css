@@ -1,0 +1,26 @@
+tr:hover{
+    -webkit-box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    z-index: 1;
+}
+
+mat-icon{
+    cursor: pointer;
+}
+
+
+table{
+    width: 100%;
+    text-align: left;
+}
+
+table>thead>tr>th,
+table>tbody>tr>td{
+    padding: 10px;
+}
+/* table>thead>tr>th{
+    background: #00838F;
+} */
+table>tbody:nth-child(even){
+    background: lightgrey;
+}

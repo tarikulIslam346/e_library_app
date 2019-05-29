@@ -1,0 +1,29 @@
+<ngx-loading [show]="loader"></ngx-loading>
+<mat-card>
+    <table>
+        <thead>
+            <tr class="page-header">
+                <th>Sr No.</th>
+                <th>User Group</th>
+                <th>Navigation Permission</th>
+                <th *ngIf="userService.isEditUserTypePermission">Edit</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let u of userTypes;let i=index;">
+            <tr>
+                <td align="center">{{i+1}}</td>
+                <td>{{u.u_type}}</td>
+                <td align="center">
+                    <button mat-icon-button>
+                      <mat-icon color="primary" (click)="openMenuPermissionDialog(u.type_id)">info</mat-icon>
+                  </button>
+                </td>
+                <td align="center" *ngIf="userService.isEditUserTypePermission">
+                    <button mat-icon-button>
+                        <mat-icon color="primary" (click)="editUserGroup(u.type_id,u.u_type)">border_color</mat-icon>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</mat-card>

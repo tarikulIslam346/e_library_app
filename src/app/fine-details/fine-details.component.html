@@ -1,0 +1,51 @@
+<mat-grid-list cols="5">
+    <mat-grid-tile class="item_image">
+        <div *ngFor="let u of user">
+
+            <img *ngIf="!u.user_image" src="/assets/dummy_user.png" />
+            <img *ngIf="u.user_image" src="{{url}}uploads/users/{{u.user_image}}" />
+            <div class="user_into">
+                <p>{{u.f_name +' '+u.l_name}}</p>
+                <!-- <p style="margin-bottom: 0;">Course No {{u.course_no}}</p> -->
+            </div>
+        </div>
+
+
+    </mat-grid-tile>
+
+    <mat-grid-tile class="item_history" colspan="4">
+        <table *ngIf="issueBook">
+            <thead>
+                <tr class="page-header">
+                    <th align="center">Sr.</th>
+                    <th align="center">Issue No</th>
+                    <th>Book Name</th>
+                    <th align="center">Accession No</th>
+                    <th>Author Name</th>
+                    <th align="center">Per day Fine</th>
+                    <th align="center">Delay</th>
+                    <th align="right">Fine (tk)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let b of issueBook;let i=index">
+                    <td align="center">{{i+1}}</td>
+                    <td align="center">{{b.issue_id}}</td>
+                    <td>{{b.title}}</td>
+                    <td align="center">{{b.accession_no}}</td>
+                    <td>{{b.author}}</td>
+                    <td align="center">{{b.fine}}
+                        <!-- <button mat-button><mat-icon>border_color</mat-icon></button> -->
+                    </td>
+                    <td align="center">{{delay}}</td>
+                    <td align="right">{{delay * b.fine }}</td>
+                </tr>
+                <tr>
+                    <td colspan="7" align="right" style="font-weight:600">Total = </td>
+                    <td align="right" style="font-weight:600">{{total}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-grid-tile>
+</mat-grid-list>
+<ngx-loading [show]="loader"></ngx-loading>

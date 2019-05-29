@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>Alert !!</h1>
+<div mat-dialog-content>
+    <p>Do you wnat to activate this user/member?</p>
+    <!-- <mat-form-field>
+    <input matInput [(ngModel)]="data.animal">
+  </mat-form-field> -->
+</div>
+<div mat-dialog-actions>
+    <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
+    <!-- <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button> -->
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+    <button mat-button [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
+</div>

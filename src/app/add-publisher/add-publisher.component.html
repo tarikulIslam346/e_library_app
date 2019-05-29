@@ -1,0 +1,24 @@
+<div class="page-header">
+    <p *ngIf="!publisherEdit">Publisher Entry</p>
+    <p *ngIf="publisherEdit">Publisher Author</p>
+</div>
+<mat-card>
+    <form [formGroup]="publisherForm" (ngSubmit)="onPublisherSubmit()">
+        <div class="user-type-container">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Publisher Name *" formControlName="publisher_name">
+            </mat-form-field>
+
+            <div>&nbsp;</div>
+
+            <div class="submit">
+                <button type="submit" mat-raised-button color="accent" *ngIf="!publisherEdit" [disabled]="!publisherForm.valid">Add</button>
+            </div>
+            <div class="submit">
+                <button type="submit" *ngIf="publisherEdit" mat-raised-button color="accent" [disabled]="!publisherForm.valid">Edit</button>
+            </div>
+
+        </div>
+    </form>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

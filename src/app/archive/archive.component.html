@@ -1,0 +1,129 @@
+<div class="page-header">
+    <p>Search Archive</p>
+</div>
+<mat-card class="book-search">
+    <form (ngSubmit)="onArchiveSubmit()" #archiveForm="ngForm">
+        <mat-form-field class="example-form-field">
+            <input matInput type="text" placeholder="Serch by archive name" [(ngModel)]="search" name="search">
+            <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="search=''">
+                    <mat-icon (click)="resetArchive()">close</mat-icon>
+                </button>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">
+                <mat-icon>search</mat-icon>
+            </button>
+    </form>
+
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Advance Search
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <form (ngSubmit)="onFilterSubmit()" #filterForm="ngForm">
+                <mat-form-field class="advance_search_field">
+                    <input matInput [matDatepicker]="picker1" [(ngModel)]="startDate" name="startDate" placeholder="Choose start date">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="advance_search_field">
+                    <input matInput [matDatepicker]="picker2" [(ngModel)]="endDate" name="endDate" placeholder="Choose start date">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field class="advance_search_field">
+                    <mat-select placeholder="Select Archive type" [(ngModel)]="type" name="type">
+                        <mat-option *ngFor="let ut of fileType" value="{{ut.type_id}}">{{ut.type}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <button type="submit" matTooltip="Advance Search" mat-raised-button style="padding: 0 8px;border-radius: 0px; margin-left: 2%;">
+                    <mat-icon style="line-height:1">search</mat-icon>
+                </button>
+                <button mat-raised-button matTooltip="Reset" (click)="resetArchive()" style="padding: 0 8px;border-radius: 0px; margin-left: 2%;">
+                    <mat-icon style="line-height:1">autorenew</mat-icon>
+                </button>
+            </form>
+
+        </mat-expansion-panel>
+    </mat-accordion>
+</mat-card>
+
+<mat-card *ngIf="archive">
+    <table>
+        <thead>
+            <tr class="page-header">
+                <!-- <th align="center">ID</th> -->
+                <th>Archive Title</th>
+                <th>Speaker/Author</th>
+                <th>Type</th>
+                <th align="center">Download</th>
+                <th align="center">View</th>
+                <th align="center" *ngIf="userService.isEditArchivePermission">Edit</th>
+                <th align="center">Details</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let ar of archive|paginate:  { itemsPerPage: 10, currentPage: p };">
+            <tr>
+                <!-- <td align="center">{{i+1}} </td> -->
+                <td> {{ar.title}}</td>
+                <td> {{ar.speaker}}</td>
+                <td *ngIf="ar.type == 1"> IRP</td>
+                <td *ngIf="ar.type == 2"> Training Video</td>
+                <td *ngIf="ar.type == 3"> Social Programme</td>
+                <td *ngIf="ar.type == 4"> Pamplates</td>
+                <td *ngIf="ar.type == 5"> Lecture</td>
+                <td *ngIf="ar.type == 6"> Ebook</td>
+                <td align="center" *ngIf="canDownload[ar.archive_id]===1">
+                    <a *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'pdf'" href="{{bookUrl}}{{ar.file}}" target="blank">
+                        <button mat-raised-button color="primary" *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'pdf'">Download <mat-icon>get_app</mat-icon></button>
+                    </a>
+                    <video *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'mp4' " width="200" height="150" controls>
+                            <source src="{{url}}uploads/archives/{{ar.file}}" type="video/mp4">
+                          Your browser does not support the video tag.
+                          </video>
+                    <video *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'avi' " width="200" height="150" controls>
+                            <source src="{{url}}uploads/archives/{{ar.file}}" type="video/avi">
+                          Your browser does not support the video tag.
+                    </video>
+                </td>
+                <td align="center" *ngIf="canDownload[ar.archive_id]!==1">
+                    <!-- No permission to download -->
+                    <button mat-raised-button color="primary" disabled>Download <mat-icon>get_app</mat-icon></button>
+
+                </td>
+                <td align="center" *ngIf="canView[ar.archive_id]===1">
+                    <button mat-raised-button color="primary" *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'pdf'" (click)=" openPdfViewerDialog(ar.file,ar.archive_id)">View Book <mat-icon >visibility</mat-icon>  </button>
+                    <video *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'mp4' " width="200" height="150" controls controlsList="nodownload">
+                            <source src="{{url}}{{ar.file}}" type="video/mp4">
+                          Your browser does not support the video tag.
+                          </video>
+                    <video *ngIf="ar.file && ar.file.substring(ar.file.lastIndexOf('.') + 1) == 'avi' " width="200" height="150" controls controls controlsList="nodownload">
+                            <source src="{{url}}{{ar.file}}" type="video/avi">
+                          Your browser does not support the video tag.
+                    </video>
+                </td>
+                <td align="center" *ngIf="canView[ar.archive_id]!==1">
+                    <!-- No permission to view -->
+                    <button mat-raised-button color="primary" disabled>View Book<mat-icon>visibility</mat-icon></button>
+                </td>
+
+                <td align="center" *ngIf="userService.isEditArchivePermission">
+                    <button mat-icon-button>
+                            <mat-icon color="primary" (click)="getArchiveId(ar.archive_id)">border_color</mat-icon>
+                        </button>
+                </td>
+                <td align="center">
+                    <button mat-icon-button>
+                            <mat-icon color="warn" (click)="getArchiveDetails(ar.archive_id,ar.type)">view_headline</mat-icon>
+                        </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</mat-card>
+
+<ngx-loading [show]="loadingbook"></ngx-loading>

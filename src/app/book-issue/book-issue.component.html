@@ -1,0 +1,176 @@
+<div class="page-header">
+    <p>Member Search</p>
+</div>
+<mat-card class="user_info_card">
+    <mat-grid-list cols="3" rowHeight="100px">
+        <mat-grid-tile colspan="2">
+            <form (ngSubmit)="onMemberSubmit()" #memberForm="ngForm" class="book-search">
+                <mat-form-field class="example-form-field">
+                    <input matInput type="text" placeholder="Member Search..." [(ngModel)]="memberName" name="memberName">
+                    <button mat-button *ngIf="memberName" matSuffix mat-icon-button aria-label="Clear" (click)="memberName=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <button type="submit" mat-raised-button color="primary">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </form>
+        </mat-grid-tile>
+        <mat-grid-tile *ngIf="!userName">
+            <button mat-button matTooltip="Select user for Details information">
+                <mat-icon>help</mat-icon>
+            </button>
+        </mat-grid-tile>
+        <mat-grid-tile rowspan="2" *ngIf="userName" style="background: lightseagreen">
+            <table class="user_details_info">
+                <tr>
+                    <td style="background:transparent"></td>
+                    <td align="center" style="background:transparent">
+                        <img src="{{url}}uploads/users/{{userImage}}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>User ID:</td>
+                    <td>{{userId}}</td>
+                </tr>
+                <tr>
+                    <td>Total Issue:</td>
+                    <td>{{totalIssue}}
+                        <button mat-button [matMenuTriggerFor]="menu" matTooltip="Show Details" (click)="getUserIssue(userId)">
+                            <mat-icon>apps</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu" class="issue_history_details">
+                            <table class="issue_history" *ngIf=" userBookIssue ? true:false">
+                                <tbody>
+                                    <tr>
+                                        <!-- <th align="center">Accession No</th> -->
+                                        <th>No</th>
+                                        <th align="center">Issue Date</th>
+                                        <th align="center">Return Date</th>
+                                        <th align="center">Return Status</th>
+                                    </tr>
+                                    <tr *ngFor="let ub of userBookIssue;let i=index">
+                                        <!-- <td align="center">32654 </td> -->
+                                        <td>{{i+1}}</td>
+                                        <td align="center">{{ub.issue_date}}</td>
+                                        <td align="center">{{ub.return_date}}</td>
+                                        <td align="center" *ngIf="ub.return_status === 0? true:false">No</td>
+                                        <td align="center" *ngIf="ub.return_status === 1? true:false">Yes</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </mat-menu>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fine</td>
+                    <td>{{totalFineOfUser}}</td>
+                </tr>
+            </table>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="2" style="overflow-y: scroll;" *ngIf="member" class="member_table">
+            <table>
+                <thead>
+                    <tr>
+                        <th align="center">Select</th>
+                        <th>Name</th>
+                        <th>Course ID</th>
+                        <!-- <th>Email</th> -->
+                        <!-- <th>Phone</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let m of member">
+                        <td align="center">
+                            <mat-radio-button (click)="getUserId(m.id,m.f_name,m.l_name,m.user_image)" value="{{m.id}}"></mat-radio-button>
+                        </td>
+                        <td> {{m.f_name +' '+ m.l_name}}</td>
+                        <td> {{m.course_no}}</td>
+                        <!-- <td> {{m.email}}</td> -->
+                        <!-- <td> {{m.phone}}</td> -->
+                        <!-- <td> <img src="{{url}}uploads/users/{{userImage}}" /></td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </mat-grid-tile>
+    </mat-grid-list>
+</mat-card>
+
+
+<mat-card *ngIf="selectBook && choice.length>=1" class="issue_info_card">
+    <h2>Selected book</h2>
+    <form (ngSubmit)="onBookIssueSubmit()" #bookIssueForm="ngForm">
+        <input *ngIf="userName" type="hidden" [(ngModel)]="userId" name="issueUserId">
+        <table>
+            <thead>
+                <tr>
+                    <th>Accession No</th>
+                    <th>Book Name</th>
+                    <th>Available Copy</th>
+                    <th align="center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let b of choice;" style="background: lightgrey;">
+                    <td>{{b.book_name}}</td>
+                    <td>{{b.book_name}}</td>
+                    <td>{{b.book_name}}</td>
+                    <td align="center">
+                        <mat-icon color="primary" (click)="remove_select(b.book_id)">delete</mat-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="text-align:right;margin-top: 3%;">
+            <mat-form-field *ngIf="userName">
+                <input matInput [matDatepicker]="picker" placeholder="Return date" [(ngModel)]="returnDate" name="returnDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker touchUi #picker></mat-datepicker>
+            </mat-form-field>
+            <button *ngIf="userName" type="submit" mat-raised-button color="primary">Issue</button>
+        </div>
+    </form>
+</mat-card>
+
+<div class="page-header">
+    <p>Book Search</p>
+</div>
+<mat-card>
+    <form (ngSubmit)="onBookSubmit()" #bookForm="ngForm">
+        <mat-form-field class="example-form-field">
+            <input matInput type="text" placeholder="Book Search..." [(ngModel)]="bookName" name="bookName">
+            <button mat-button *ngIf="bookName" matSuffix mat-icon-button aria-label="Clear" (click)="bookName=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">
+            <mat-icon>search</mat-icon>
+        </button>
+    </form>
+    <table *ngIf="book">
+        <thead>
+            <tr>
+                <th>Accession No</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th align="center">Shelf_No</th>
+                <th align="center">Row_No</th>
+                <th align="center">Select for Issue</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let b of book | paginate: { itemsPerPage: 20, currentPage: p }" [style.background-color]="b.issuable_copy == 0 ? 'red' : 'white'">
+                <td> {{b.accession_no}}</td>
+                <td> {{b.title}}</td>
+                <td> {{b.author}}</td>
+                <td align="center"> {{b.shelf_no}}</td>
+                <td align="center"> {{b.row_no}}</td>
+                <td align="center">
+                    <mat-checkbox (change)="getBookId(b.book_id,b.title,checkBook)" [disabled]="b.issuable_copy == 0" #checkBook></mat-checkbox>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</mat-card>
+<ngx-loading [show]="loadingbook"></ngx-loading>

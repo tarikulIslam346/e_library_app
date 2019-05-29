@@ -1,0 +1,97 @@
+mat-form-field {
+    width: 92%;
+}
+
+button {
+    padding: 0 8px;
+    margin-left: 1%;
+    
+}
+.mat-raised-button{
+    box-shadow: none;
+}
+
+form{
+    margin: 2% 0px 5% 0px;
+}
+
+.book-search{
+    margin-bottom: 2%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+tr:hover{
+    -webkit-box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    z-index: 1;
+}
+
+table{
+    width: 100%;
+    text-align: left;
+}
+
+table>thead>tr>th,
+table>tbody>tr>td{
+    padding: 0 10px;
+    font-size: 14px;
+}
+table>thead>tr>th{
+    background: #3f51b5;
+}
+table>tbody:nth-child(even){
+    background: lightgrey;
+}
+
+
+/* card design */
+
+.example-card {
+    margin-right: 10px;
+  }
+  
+  /* .example-header-image {
+    background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+    background-size: cover;
+  } */
+
+  mat-card-header button{
+      position: absolute;
+      top: 0;
+      right: 0;
+  }
+
+  mat-card-actions{
+      text-align: right;
+  }
+
+  mat-card-content h2{
+      margin-top: 10px;
+      margin-bottom: 0;
+  }
+  mat-card-content h4{
+    color: gray;
+    margin-top: 6px;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .no_video_image img{
+    width: 70%;
+    height: 0%;
+    display: block;
+    margin: auto;
+  }
+
+  
+@media (max-width:768px){
+    mat-form-field{
+        width: 77%;
+    }
+
+    .mat-expansion-panel-body{
+        padding: 0 !important;
+    }
+  }

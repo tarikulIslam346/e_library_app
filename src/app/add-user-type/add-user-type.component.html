@@ -1,0 +1,60 @@
+<div class="page-header">
+    <p *ngIf="!userTypeEdit">Add User Type</p>
+    <p *ngIf="userTypeEdit">Edit User Type</p>
+</div>
+<mat-card>
+    <form [formGroup]="userTypeForm" (ngSubmit)="onSubmit()">
+        <div class="user-type-container">
+            <mat-form-field>
+                <input type="text" matInput placeholder="Type Name *" formControlName="u_type">
+            </mat-form-field>
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Select Permission From here
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <table *ngIf="!userTypeEdit">
+                    <tbody *ngFor="let menu of menus">
+                        <tr>
+                            <td>
+                                <mat-checkbox formArrayName="menu_id" (change)="addMenuId(menuPermission,menu.menu_id)" #menuPermission>{{menu.menu_name}}</mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox formArrayName="read" (change)="addCanRead(readPermission,menu.menu_id)" #readPermission [disabled]="!menuPermission.checked">Read</mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox formArrayName="write" (change)="addCanWrite(writePermission,menu.menu_id)" #writePermission [disabled]="!menuPermission.checked">Write</mat-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table *ngIf="userTypeEdit">
+                    <tbody *ngFor="let menu of menus;let i=index">
+                        <tr>
+                            <td>
+                                <mat-checkbox formArrayName="menu_id" (change)="editMenuId(menuPermission,permissionId[i],menu.menu_id,readPermission,writePermission)" #menuPermission [checked]="permissionId[i] ? true : false ">{{menu.menu_name}}</mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox formArrayName="read" (change)="editCanRead(readPermission,permissionId[i])" #readPermission [disabled]="!menuPermission.checked" [checked]="canReadId[i] ? true : false ">Read</mat-checkbox>
+                            </td>
+                            <td>
+                                <mat-checkbox formArrayName="write" (change)="editCanWrite(writePermission,permissionId[i])" #writePermission [disabled]="!menuPermission.checked" [checked]="canWriteId[i] ? true : false ">Write</mat-checkbox>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-expansion-panel>
+            <div>&nbsp;</div>
+
+            <div class="submit">
+                <button type="submit" mat-raised-button color="accent" *ngIf="!userTypeEdit" [disabled]="!userTypeForm.valid">Add</button>
+            </div>
+            <div class="submit">
+                <button type="submit" *ngIf="userTypeEdit" mat-raised-button color="accent" [disabled]="!userTypeForm.valid">Edit</button>
+            </div>
+
+        </div>
+    </form>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

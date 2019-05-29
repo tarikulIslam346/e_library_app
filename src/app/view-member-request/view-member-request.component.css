@@ -1,0 +1,44 @@
+mat-form-field{
+    width: 92%;
+}
+
+button{
+    margin-left: 1%;
+}
+
+mat-card{
+    margin-bottom: 2%;
+}
+table {
+    width: 100%;
+}
+
+table>thead>tr>th,
+table>tbody>tr>td {
+    padding: 0 5px;
+}
+
+table>tbody:nth-child(even) {
+    background: lightgrey;
+}
+
+mat-icon{
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0 7px;
+}
+
+.accept-denie:hover{
+    color: fff !important;
+    background: gray !important;
+}
+
+img {
+    width: 35px;
+    height: 35px;
+    padding-top: 2px;transition: -webkit-transform 0.25s ease;
+}
+
+img:active {
+    -webkit-transform: scale(5);
+}

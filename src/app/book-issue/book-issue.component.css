@@ -1,0 +1,115 @@
+.user_info_card{
+    padding: 0 0 0 16px;
+}
+
+.issue_info_card{
+    background: lightseagreen;
+    padding: 0 16px 0 16px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    text-align: left;
+}
+
+table>tr>th {
+    border-bottom: 1px solid #111;
+}
+
+table>thead>tr>th,
+table>tbody>tr>td {
+    padding: 5px 10px;
+    font-size: 14px;
+
+}
+
+table>thead>tr{
+    background: #3f51b5;
+    color: #fff;
+}
+
+table>tbody>tr:nth-child(even) {
+    background: lightgrey;
+}
+
+.book-search{
+    width: 100%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.book-search mat-form-field{
+    width: 87%;
+}
+
+
+mat-form-field{
+    width: 91%;
+}
+
+button{
+    margin-left: 2%;
+}
+
+.member-datails{
+    width: 90%;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.mat-card{
+    margin-bottom: 1%;
+}
+
+mat-icon{
+    cursor: pointer;
+}
+
+.user_details_info{
+    padding: 10px;
+}
+
+.user_details_info img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    
+}
+
+.user_details_info tr>td{
+    background: lightgray;
+}
+
+.issue_history tr:hover{
+    -webkit-box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0, 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    z-index: 1;
+}
+
+.issue_history thead>tr>th,
+.issue_history tbody>tr>td{
+    padding: 10px;
+}
+
+.user_details_info tr>td:first-child{
+    font-weight: 600;
+}
+
+.issue_history tbody>tr:nth-child(even){
+    background: lightgrey;
+}
+
+.issue_history tbody>tr>th{
+    background: #00838F;
+    padding: 10px;
+}
+
+img {
+    transition: -webkit-transform 0.25s ease;
+}
+
+img:active {
+    -webkit-transform: scale(2);
+}

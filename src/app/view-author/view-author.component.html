@@ -1,0 +1,41 @@
+<div class="page-header">
+    <p>Search Author</p>
+</div>
+<mat-card class="author-search">
+    <form (ngSubmit)="onAuthorSubmit()" #bookForm="ngForm">
+        <mat-form-field class="author-search-form-field">
+            <input matInput type="text" placeholder="Serch by author name" [(ngModel)]="AuthorName" name="AuthorName">
+            <button mat-button *ngIf="AuthorName" matSuffix mat-icon-button aria-label="Clear" (click)="AuthorName=''">
+              <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button type="submit" mat-raised-button color="primary">
+          <mat-icon>search</mat-icon>
+      </button>
+    </form>
+</mat-card>
+<mat-card>
+    <table>
+        <thead>
+            <tr class="page-header">
+                <th>Sr No.</th>
+                <th>Name</th>
+                <th *ngIf="userService.isEditAuthorPermission ">Edit</th>
+                <!-- <th>Edit</th> -->
+            </tr>
+        </thead>
+        <tbody *ngFor="let a of authors|paginate:  { itemsPerPage: 10, currentPage: p }; let i=index;">
+            <tr>
+                <td>{{i+1}}</td>
+                <td>{{a.author_name}}</td>
+                <td align="center" *ngIf="userService.isEditAuthorPermission ">
+                    <!-- <td align="center"> -->
+                    <button mat-button><mat-icon color="primary" (click)="editAuthor(a.id)">border_color</mat-icon></button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</mat-card>
+<ngx-loading [show]="loader"></ngx-loading>

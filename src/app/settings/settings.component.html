@@ -1,0 +1,20 @@
+<ngx-loading [show]="loader"></ngx-loading>
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-icon>vpn_key</mat-icon><span>Chagne Password here</span>
+            
+        </mat-expansion-panel-header>
+        <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <input type="password" matInput placeholder="Current Password" formControlName="current_password">
+            </mat-form-field><br>
+            <mat-form-field>
+                <input type="password" matInput placeholder="New Password" formControlName="new_password">
+            </mat-form-field><br>
+            <mat-form-field>
+                <input type="password" matInput placeholder="Re -enter Password" formControlName="confirm_password">
+            </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="!changePasswordForm.valid">Submit</button>
+        </form>
+    </mat-expansion-panel>
+

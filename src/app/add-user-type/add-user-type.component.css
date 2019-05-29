@@ -1,0 +1,40 @@
+.user-type-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-type-container>* {
+    /* margin-left: 10%;
+    width: 60%; */
+}
+
+.submit {
+    /* width: 20%; */
+}
+
+form{
+    margin: 1% 25%;
+    padding: 10px 2%;
+}
+
+table{
+    width: 100%;
+}
+
+table>tbody>tr>td{
+    padding: 10px;
+}
+table>tbody:nth-child(odd){
+    background: lightgrey;
+}
+
+@media (max-width:768px){
+    form {
+        margin: 0;
+        padding: 0;
+    }
+
+    .mat-expansion-panel-body{
+        padding: 0 !important;
+    }
+  }

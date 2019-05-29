@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>See query </h1>
+<table>
+    <thead>
+        <tr class="page-header">
+            <th align="center">User ID</th>
+            <th align="center">Message</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let q of queryList">
+        <tr>
+            <!-- <td align="center">{{i+1}} </td> -->
+            <td align="center"> {{q.f_name}}</td>
+            <td align="center"> {{q.query_text}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Close</button>
+</div>

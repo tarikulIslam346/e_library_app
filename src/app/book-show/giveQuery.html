@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Enter your book permission request </h1>
+<form [formGroup]="queryForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field>
+        <textarea matInput placeholder="Enter Query text *" formControlName="query_text"></textarea>
+    </mat-form-field>
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">No Thanks</button>
+        <button type="submit" mat-button>Submit</button>
+    </div>
+</form>

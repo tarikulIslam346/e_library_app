@@ -1,0 +1,25 @@
+<!-- <div class="page-header">
+    <p>Book Category Information</p>
+</div> -->
+<mat-card *ngIf="categoryDetails">
+    <table>
+        <thead>
+            <tr class="page-header">
+                <th>Category Name</th>
+                <th> Description</th>
+                <th *ngIf="userService.isEditBookCategoryPermission">Action</th>
+            </tr>
+        </thead>
+        <tbody *ngFor="let c of categoryDetails">
+            <tr>
+                <td>{{c.title}}</td>
+                <td>{{c.description}}</td>
+                <td align="center" *ngIf="userService.isEditBookCategoryPermission">
+                    <mat-icon color="primary" (click)="editCategory(c.category_id)">border_color</mat-icon>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</mat-card>
+
+<ngx-loading [show]="loader"></ngx-loading>

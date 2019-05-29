@@ -1,0 +1,21 @@
+<mat-card *ngFor="let q of query |paginate:  { itemsPerPage: 2, currentPage: p };let i=index" class="query_deco">
+    <mat-grid-list cols="5" rowHeight="150">
+        <mat-grid-tile>
+            <div>
+                <img *ngIf="q.user_image" src="{{url}}uploads/users/{{q.user_image}}" alt="Photo of a Shiba Inu">
+                <img *ngIf="!q.user_image" src="{{dummyUrl}}dummy_user.png" alt="Photo of a Shiba Inu">
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile colspan="4" class="query_content_deco">
+            <p class="query_content_deco_title">{{q.f_name +' '+q.l_name}}</p>
+            <div class="query_content_deco_meta">
+                <p class=""><span>Book Name:</span> {{q.title}}</p>
+                <p class=""><span>Book Id:</span> {{q.book_id}}</p>
+                <p class=""><span>Date/Time:</span> 2019/1/1 || 05:50 am</p>
+            </div>
+            <p class="query_content_deco_message">{{q.query_text}}</p>
+
+        </mat-grid-tile>
+    </mat-grid-list>
+</mat-card>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>

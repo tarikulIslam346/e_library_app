@@ -1,0 +1,183 @@
+<mat-toolbar color="primary" *ngIf="userService.isLoggedIn">
+    <mat-toolbar-row>
+        <h3 align="center" color="white">DSCSC Library</h3>
+        <button style="padding-left: 5%" type="button" matTooltip="Hide action bar" aria-label="Toggle sidenav" mat-icon-button (click)="autoHide(drawer)" color="primary">
+            <mat-icon color="warn" aria-label="Side nav toggle icon">format_indent_decrease</mat-icon><br>
+        </button>
+
+        <button class="logout-button" mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+            <!-- <h3 align="center">DSCSC Libraray</h3> -->
+            <button mat-menu-item *ngFor="let u of user">
+                <mat-icon *ngIf="u.user_image" class="user_image"><img src="{{url}}uploads/users/{{u.user_image}}" /></mat-icon>
+                <mat-icon *ngIf="!u.user_image">person</mat-icon>
+                <span>{{u.f_name}} {{u.l_name}}</span>
+            </button>
+            <button mat-menu-item *ngFor="let u of user">
+                <mat-icon>email</mat-icon>
+                <span>{{u.email}}</span>
+            </button>
+            <button mat-menu-item>
+                <a mat-list-item routerLink='/change-password' style="text-decoration: none;color: #111;">
+                    <mat-icon>build</mat-icon><span>Settings</span>
+                </a>
+                </button>
+            <button mat-menu-item (click)="logout(drawer)">
+                <mat-icon color="warn">power_settings_new</mat-icon>
+                <span>Logout</span>
+            </button>
+        </mat-menu>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+
+<mat-sidenav-container>
+    <mat-sidenav #drawer [mode]="mobileQuery.matches ? 'over' : 'side'" fixedInViewport opened fixedTopGap="56" [style.display]="!userService.isLoggedIn ? 'none':'auto'">
+        <mat-nav-list *ngIf="userService.isLoggedIn">
+            <a mat-list-item routerLink=''>
+                <mat-icon>home</mat-icon>Dashboard
+            </a>
+
+            <mat-expansion-panel *ngIf="userService.isBookIssuePermission || userService.isBookIssueListShowPermission">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>airplay</mat-icon><span>Issue & Return Counter</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <a mat-list-item routerLink='/book-issue' *ngIf="userService.isBookIssuePermission">
+                    <mat-icon>library_books</mat-icon><span>Book Issue</span>
+                </a>
+                <a mat-list-item routerLink='/view-book-issue-list' *ngIf="userService.isBookIssueListShowPermission">
+                    <mat-icon>library_books</mat-icon><span>Book Return </span>
+                </a>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf=" userService.isViewUserPermission || 
+                    userService.isAddUserPermission || 
+                    userService.isViewUserTypePermission ||
+                    userService.isAddUserTypePermission ">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>supervisor_account</mat-icon>Users
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <a mat-list-item routerLink='/add-user' *ngIf="userService.isAddUserPermission">
+                    <mat-icon>person_add</mat-icon><span>Add User</span>
+                </a>
+                <a mat-list-item routerLink='/user' *ngIf="userService.isViewUserPermission">
+                    <mat-icon>folder_shared</mat-icon><span>User List</span>
+                </a>
+                <a mat-list-item routerLink='/add-user-type' *ngIf="userService.isAddUserTypePermission">
+                    <mat-icon>vpn_key</mat-icon><span>Add User Group</span>
+                </a>
+                <a mat-list-item routerLink='/view-user-type' *ngIf="userService.isViewUserTypePermission">
+                    <mat-icon>folder_shared</mat-icon><span>User Group List</span>
+                </a>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="userService.isMemberPermission">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>supervisor_account</mat-icon>Members
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <a mat-list-item routerLink='/member' *ngIf="userService.isMemberPermission">
+                    <mat-icon>folder_shared</mat-icon><span>Members' List</span>
+                </a>
+                <a mat-list-item routerLink='/view-member-request' *ngIf="userService.isMemberRequestPermission">
+                    <mat-icon>beenhere</mat-icon><span>Members' request  List</span>
+                </a>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="userService.isBookShowPermission ||
+                    userService.isBookCategoryShowPermission ||
+                    userService.isBookIssueListShowPermission||
+                    userService.isBookIssuePermission||
+                    userService.isAddBookPermission||
+                    userService.isAddBookCategoryPermission||
+                    userService.isAddAuthorPermission||
+                    userService.isAuthorShowPermission||
+                    userService.isAddPublisherPermission||
+                    userService.isPublisherShowPermission
+                    ">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>library_books</mat-icon><span>Books & Others</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <a mat-list-item routerLink='/book-show' *ngIf="userService.isBookShowPermission">
+                    <mat-icon>library_books</mat-icon><span>Books</span>
+                </a>
+                <a mat-list-item routerLink='/video-show' *ngIf="userService.isVideoShowPermission">
+                    <mat-icon>videocam</mat-icon><span>Videos</span>
+                </a>
+                <a mat-list-item routerLink='/ppt-show' *ngIf="userService.isPptShowPermission">
+                    <mat-icon>view_carousel</mat-icon><span>PPT</span>
+                </a>
+                <a mat-list-item routerLink='/irp-show' *ngIf="userService.isIrpShowPermission">
+                    <mat-icon>view_array</mat-icon><span>IRP</span>
+                </a>
+                <a mat-list-item routerLink='/journal-show' *ngIf="userService.isJournalShowPermission">
+                    <mat-icon>note</mat-icon><span>Journal</span>
+                </a>
+                <a mat-list-item routerLink='/add-book' *ngIf="userService.isAddBookPermission">
+                    <mat-icon>playlist_add</mat-icon><span>Materials Entry</span>
+                </a>
+                <a mat-list-item routerLink='/book-cat' *ngIf="userService.isAddBookCategoryPermission">
+                    <mat-icon>playlist_add</mat-icon><span>Category Entry</span>
+                </a>
+                <a mat-list-item routerLink='/book-cat-view' *ngIf="userService.isBookCategoryShowPermission">
+                    <mat-icon>sort</mat-icon><span>Materials Categories</span>
+                </a>
+
+                <a mat-list-item routerLink='/add-author' *ngIf="userService.isAddAuthorPermission">
+                    <mat-icon>playlist_add</mat-icon><span>Author Entry</span>
+                </a>
+                <a mat-list-item routerLink='/view-author' *ngIf="userService.isAuthorShowPermission">
+                    <mat-icon>sort</mat-icon><span>Author lists</span>
+                </a>
+                <a mat-list-item routerLink='/add-publisher' *ngIf="userService.isAddPublisherPermission">
+                    <mat-icon>playlist_add</mat-icon><span>Publisher Entry</span>
+                </a>
+                <a mat-list-item routerLink='/view-publisher' *ngIf="userService.isPublisherShowPermission">
+                    <mat-icon>sort</mat-icon><span>Publisher List</span>
+                </a>
+
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="userService.isAddArchivePermission || userService.isViewArchivePermission ">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>movie</mat-icon><span>Archive</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <a mat-list-item routerLink='/add-archive' *ngIf="userService.isAddArchivePermission">
+                    <mat-icon>queue</mat-icon><span>Add Archive</span>
+                </a>
+                <a mat-list-item routerLink='/archive' *ngIf="userService.isViewArchivePermission">
+                    <mat-icon>folder_shared</mat-icon><span>Show Archives</span>
+                </a>
+            </mat-expansion-panel>
+            <mat-expansion-panel *ngIf="userService.isViewFinePermission">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <mat-icon>local_atm</mat-icon><span>Fine</span>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <a mat-list-item routerLink='/fine-show' *ngIf="userService.isViewFinePermission">
+                    <mat-icon>local_atm</mat-icon><span>Show Fine list</span>
+                </a>
+            </mat-expansion-panel>
+        </mat-nav-list>
+        <div class="brand_logo">
+            <h4>Powerd By</h4>
+            <a href="https://www.intoiit.com/new/productDetails.html" target="_blank" style="text-decoration: none;color: #000"><img src="assets/brand_logo.png">
+                <p><i>IntoiiT Bangladesh Ltd.</i></p>
+            </a>
+        </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content [style.margin-left]="!userService.isLoggedIn ? '0 !important':'auto'" [style.padding-top]="!userService.isLoggedIn ? '0 !important':'60px'">
+        <div class="main-card-deco">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
